@@ -8,8 +8,8 @@
 	}
 
 	const handleShareCLick = () => {
-		if (typeof TelegramGameProxy !== 'undefined') {
-            TelegramGameProxy.shareScore();
+		if (typeof window.TelegramGameProxy !== 'undefined') {
+            window.TelegramGameProxy.shareScore();
         } else {
             console.error('TelegramGameProxy не доступен');
         }
