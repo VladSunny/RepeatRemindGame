@@ -22,7 +22,6 @@
     "@tailwindcss/typography": "0.5.10",
     "@types/eslint": "8.56.0",
     "@types/node": "20.11.6",
-    "@types/node-telegram-bot-api": "^0.64.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "autoprefixer": "10.4.17",
@@ -43,7 +42,6 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.5.4",
-    "highlight.js": "11.9.0",
-    "node-telegram-bot-api": "^0.64.0"
+    "highlight.js": "11.9.0"
   }
 }
