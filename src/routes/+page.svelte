@@ -9,6 +9,7 @@
 
 </script>
 
+
 <style>
 	button {
 		-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -17,7 +18,8 @@
 </style>
 
 <div class="h-screen w-screen flex items-center justify-center">
-	<button class='btn variant-filled mr-2 focus:outline-none'>Share</button>
+	<!-- <button onclick="TelegramGameProxy.shareScore()">Share score</button> -->
+	<button class='btn variant-filled mr-2 focus:outline-none' on:click={TelegramGameProxy.shareScore()}>Share</button>
 	<button class='btn variant-filled-primary' on:click={handleClick}>clicks: {clicks}</button>
 	<button class='btn variant-filled-secondary ml-2 bg-transparent outline-none border-none'>SET</button>
 	
