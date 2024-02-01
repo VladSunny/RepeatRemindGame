@@ -19,6 +19,7 @@
 			userId: $page.url.searchParams.get("user_id") || "",
 			chatId: $page.url.searchParams.get("chat_id") || "",
 			gameMessageId: $page.url.searchParams.get("game_id") || "",
+			inlineMessageId: $page.url.searchParams.get("inline_message_id") || "",
 			score: clicks,
 		};
 
