@@ -10,7 +10,8 @@ export const POST: RequestHandler = async ({request}) => {
 
     bot.setGameScore(parseInt(userId), score, {
         chat_id: parseInt(chatId),
-        message_id: parseInt(gameMessageId)
+        message_id: parseInt(gameMessageId),
+        force: true
     })
 
     return new Response();
