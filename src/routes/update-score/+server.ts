@@ -9,9 +9,8 @@ export const POST: RequestHandler = async ({request}) => {
     let formData = new FormData();
     formData.append('user_id', userId);
     formData.append('score', score.toString());
-    formData.append('force', 'true'); // Убедитесь, что знаете последствия использования этого параметра
+    formData.append('force', 'true');
 
-    // Эти поля взаимоисключающие, добавляем соответствующее
     if (inlineMessageId) {
         formData.append('inline_message_id', inlineMessageId);
     } else {
@@ -28,18 +27,16 @@ export const POST: RequestHandler = async ({request}) => {
         const result = await response.json();
         console.log(result);
 
-        // Возвращаем ответ клиенту
         return new Response(JSON.stringify(result), {
-            status: response.ok ? 200 : 400, // 200 OK при успехе, иначе 400 Bad Request
+            status: response.ok ? 200 : 400,
             headers: {
                 'Content-Type': 'application/json'
             }
         });
     } catch (error) {
-        // Обработка ошибок при запросе к API Telegram
         console.error(error);
         return new Response(JSON.stringify({error: 'Failed to set game score'}), {
-            status: 500, // 500 Internal Server Error
+            status: 500,
             headers: {
                 'Content-Type': 'application/json'
             }
