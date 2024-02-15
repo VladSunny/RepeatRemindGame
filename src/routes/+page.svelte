@@ -2,12 +2,15 @@
 
 <script lang='ts'>
 	import { page } from "$app/stores";
+	import type { PageData } from "./$types";
 	import type { UpdateScoreArgs } from "./update-score/types";
+	export let data: PageData;
 
 	let clicks = 0;
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		clicks++;
+		console.log(await data.supabase.from("modules").select("*"));
 	}
 
 	const handleShareClick = () => {
