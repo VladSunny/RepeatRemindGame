@@ -5,6 +5,7 @@ export const load = (async ({parent, url}) => {
     const {supabase} = await parent();
     const module_id = url.searchParams.get("module_id") || "";
     const module = await supabase.from('modules').select('content').eq("id", parseInt(module_id));
+    
     if (!module.data?.[0]?.content)
         throw error(404, "Cant load module id");
 
