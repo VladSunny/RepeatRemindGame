@@ -13,6 +13,9 @@
 	let lastClickValue = "";
 	let lastClickKey = "";
 
+	let lastClickValueButtonID = "";
+	let lastClickKeyButtonID = "";
+
 	type Point = {
 		x: number;
 		y: number;
@@ -22,12 +25,15 @@
 	let rPointsMatrix: Point[] = [];
 
 	let spaceX = 0;
-	let spaceY = 0
+	let spaceY = 0;
+
+	let curID = 0;
 
 	generateMatrix();
 
-	const handleKeyClick = (key: string) => () => {
+	const handleKeyClick = (key: string, buttonID: string) => () => {
 		lastClickKey = key;
+		lastClickKeyButtonID = buttonID;
 
 		if (lastClickValue) {
 			if (data.module[lastClickKey] == lastClickValue) {
@@ -43,8 +49,9 @@
 		}
 	}
 
-	const handleValueClick = (value: string) => () => {
+	const handleValueClick = (value: string, buttonID: string) => () => {
 		lastClickValue = value;
+		lastClickValueButtonID = buttonID;
 
 		if (lastClickKey) {
 			if (data.module[lastClickKey] == lastClickValue) {
@@ -79,10 +86,15 @@
 		const xr = rPoint.x;
 		const yr = rPoint.y;
 
-		return {key, xl, yl, value, xr, yr};
+		const lID = generateId();
+		const rID = generateId();
+
+		return {key, xl, yl, value, xr, yr, lID, rID};
 	})
 
 	function correctAnswer(): void {
+		document.getElementById(lastClickKeyButtonID)?.remove();
+		document.getElementById(lastClickValueButtonID)?.remove();
 		score++;
 	}
 
@@ -119,6 +131,11 @@
 			}
 		}
 	}
+
+	function generateId(): string {
+		curID++;
+    	return curID.toString();
+	}
 </script>
 
 <div class="absolute p-3 text-4xl">
@@ -127,7 +144,7 @@
 
 <div class="h-screen w-screen relative">
 	{#each items as item}
-		<ItemButton isKey x={item.xl} y={item.yl} onclick={handleKeyClick(item.key)}> {item.key} </ItemButton>
-		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value)}> {item.value} </ItemButton>
+		<ItemButton isKey x={item.xl} y={item.yl} onclick={handleKeyClick(item.key, item.lID)} id={item.lID}> {item.key} </ItemButton>
+		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value, item.rID)} id={item.rID}> {item.value} </ItemButton>
 	{/each}
 </div>

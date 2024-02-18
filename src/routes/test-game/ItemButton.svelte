@@ -5,17 +5,10 @@
     export let x: number;
     export let y: number;
     export let onclick: () => void;
-
+    export let id: string;
 
 </script>
 
-<button on:click={onclick} class='absolute btn variant-filled-primary' class:variant-filled-secondary = {!isKey} style="left: {x}vw; top: {y}vh; width: {buttonWidth - buttonMargin}vw; height: {buttonHeight - buttonMargin}vh">
+<button on:click={onclick} id={id} class='absolute btn variant-filled-primary' class:variant-filled-secondary = {!isKey} style="left: {x}vw; top: {y}vh; width: {buttonWidth - buttonMargin}vw; height: {buttonHeight - buttonMargin}vh">
     <p><slot/></p>
 </button>
-
-<style>
-    /* button {
-        width: 20vw;
-        height: 15vh;
-    } */
-</style>
