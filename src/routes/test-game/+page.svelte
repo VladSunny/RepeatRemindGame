@@ -8,6 +8,8 @@
 	import { buttonHeight, buttonWidth } from "./config";
 	export let data: PageData;
 
+	let score = 0;
+
 	let lastClickValue = "";
 	let lastClickKey = "";
 
@@ -16,8 +18,8 @@
 		y: number;
 	}
 
-	let lPointsMatrix: Point[][] = [];
-	let rPointsMatrix: Point[][] = [];
+	let lPointsMatrix: Point[] = [];
+	let rPointsMatrix: Point[] = [];
 
 	let spaceX = 0;
 	let spaceY = 0
@@ -30,6 +32,7 @@
 		if (lastClickValue) {
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
+				correctAnswer();
 			}
 			else {
 				console.log("incorrect")
@@ -46,6 +49,7 @@
 		if (lastClickKey) {
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
+				correctAnswer();
 			}
 			else {
 				console.log("incorrect")
@@ -60,22 +64,14 @@
 	$: items = Object.keys(data.module).map(key => {
 		const value = data.module[key];
 
-		const lPoint_i = Math.round(Math.random() * (lPointsMatrix.length - 1));
-		const lPoint_j = Math.round(Math.random() * (lPointsMatrix[lPoint_i].length - 1));
+		const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
+		const rPoint_ind = Math.round(Math.random() * (rPointsMatrix.length - 1));
 
-		const rPoint_i = Math.round(Math.random() * (rPointsMatrix.length - 1));
-		const rPoint_j = Math.round(Math.random() * (rPointsMatrix[rPoint_i].length - 1));
+		const lPoint = lPointsMatrix[lPoint_ind]
+		const rPoint = rPointsMatrix[rPoint_ind]
 
-		const lPoint = lPointsMatrix[lPoint_i][lPoint_j]
-		const rPoint = rPointsMatrix[rPoint_i][rPoint_j]
-
-		lPointsMatrix[lPoint_i].splice(lPoint_j, 1);
-		rPointsMatrix[rPoint_i].splice(rPoint_j, 1);
-
-		if (!lPointsMatrix[lPoint_i].length)
-			lPointsMatrix.splice(lPoint_i, 1);
-		if (!rPointsMatrix[rPoint_i].length)
-			rPointsMatrix.splice(rPoint_i, 1);
+		lPointsMatrix.splice(lPoint_ind, 1);
+		rPointsMatrix.splice(rPoint_ind, 1);
 
 		const xl = lPoint.x;
 		const yl = lPoint.y;
@@ -85,6 +81,10 @@
 
 		return {key, xl, yl, value, xr, yr};
 	})
+
+	function correctAnswer(): void {
+		score++;
+	}
 
 	function totalLengthFrom2DArray<T>(arr: T[][]): number {
 		let size = 0;
@@ -108,20 +108,22 @@
 		else spaceY = (100 % buttonHeight) / 2;
 
 		for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
-			lPointsMatrix.push([])
 			for (let x = spaceX; x + buttonWidth <= 50; x += buttonWidth) {
-				lPointsMatrix[lPointsMatrix.length - 1].push({x: x, y: y});
+				lPointsMatrix.push({x: x, y: y});
 			}
 		}
 
 		for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
-			rPointsMatrix.push([])
 			for (let x = 50; x + buttonWidth <= 100; x += buttonWidth) {
-				rPointsMatrix[rPointsMatrix.length - 1].push({x: x, y: y});
+				rPointsMatrix.push({x: x, y: y});
 			}
 		}
 	}
 </script>
+
+<div class="absolute p-3 text-4xl">
+	<p>Score: {score}</p>
+</div>
 
 <div class="h-screen w-screen relative">
 	{#each items as item}
