@@ -65,14 +65,6 @@
 
 		const rPoint_i = Math.round(Math.random() * (rPointsMatrix.length - 1));
 		const rPoint_j = Math.round(Math.random() * (rPointsMatrix[rPoint_i].length - 1));
-		
-		console.log(`
-			lPoint_i = ${lPoint_i}
-			lPoint_j = ${lPoint_j}
-
-			rPoint_i = ${rPoint_i}
-			rPoint_j = ${rPoint_j}
-		`);
 
 		const lPoint = lPointsMatrix[lPoint_i][lPoint_j]
 		const rPoint = rPointsMatrix[rPoint_i][rPoint_j]
