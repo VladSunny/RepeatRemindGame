@@ -36,6 +36,9 @@
 		lastClickKeyButtonID = buttonID;
 
 		if (lastClickValue) {
+			const lastClickKeyButton = document.getElementById(buttonID);
+			lastClickKeyButton?.blur();
+
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
 				correctAnswer();
@@ -54,6 +57,9 @@
 		lastClickValueButtonID = buttonID;
 
 		if (lastClickKey) {
+			const lastClickValueButton = document.getElementById(buttonID);
+			lastClickValueButton?.blur();
+
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
 				correctAnswer();
@@ -98,16 +104,6 @@
 		score++;
 	}
 
-	function totalLengthFrom2DArray<T>(arr: T[][]): number {
-		let size = 0;
-		
-		for (const item of arr) {
-			size += item.length;
-		}
-
-		return size;
-	}
-
 	function generateMatrix(): void {
 
 		lPointsMatrix = [];
@@ -142,9 +138,12 @@
 	<p>Score: {score}</p>
 </div>
 
+
 <div class="h-screen w-screen relative">
 	{#each items as item}
 		<ItemButton isKey x={item.xl} y={item.yl} onclick={handleKeyClick(item.key, item.lID)} id={item.lID}> {item.key} </ItemButton>
 		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value, item.rID)} id={item.rID}> {item.value} </ItemButton>
 	{/each}
 </div>
+
+  
