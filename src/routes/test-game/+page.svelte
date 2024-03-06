@@ -6,9 +6,11 @@
 	import type { UpdateScoreArgs } from "../update-score/types";
 	import ItemButton from "./ItemButton.svelte";
 	import { buttonHeight, buttonWidth } from "./config";
+	import Timer from "./Timer.svelte";
 	export let data: PageData;
 
 	let score = 0;
+	let itemsRemain: number = Object.keys(data.module).length;
 
 	let lastClickValue = "";
 	let lastClickKey = "";
@@ -73,7 +75,6 @@
 		}
 	}
 
-	$: console.log(data.module);
 	$: items = Object.keys(data.module).map(key => {
 		const value = data.module[key];
 
@@ -102,6 +103,7 @@
 		document.getElementById(lastClickKeyButtonID)?.remove();
 		document.getElementById(lastClickValueButtonID)?.remove();
 		score++;
+		itemsRemain--;
 	}
 
 	function generateMatrix(): void {
@@ -134,8 +136,10 @@
 	}
 </script>
 
-<div class="absolute p-3 text-4xl">
-	<p>Score: {score}</p>
+<div class="absolute pl-2 text-4xl flex flex-row space-x-6 w-screen">
+	<h1>Очки: {score}</h1>
+	<Timer maxSeconds={10} timeIsUp={()=>{console.log("Time's up")}}></Timer>
+	<h1>Осталось элементов: {itemsRemain}</h1>
 </div>
 
 
@@ -145,5 +149,3 @@
 		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value, item.rID)} id={item.rID}> {item.value} </ItemButton>
 	{/each}
 </div>
-
-  
