@@ -6,10 +6,10 @@
     export let x: number;
     export let y: number;
     export let onclick: () => void;
-    export let id: string;
+    export let selected: boolean;
 
 </script>
 
-<button on:click={onclick} transition:fade={{ duration: 500 }} id={id} class='fade absolute btn variant-filled-primary focus:ring-8 focus:ring-green-500 focus:ring-opacity-50' class:variant-ghost-primary = {!isKey} style="left: {x}vw; top: {y}vh; width: {buttonWidth - buttonMargin}vw; height: {buttonHeight - buttonMargin}vh">
+<button on:click={onclick} transition:fade={{ duration: 500 }} class='fade absolute btn variant-filled-primary ring-opacity-50' class:variant-ghost-primary = {!isKey} style="left: {x}vw; top: {y}vh; width: {buttonWidth - buttonMargin}vw; height: {buttonHeight - buttonMargin}vh" class:ring-8={selected} class:ring-green-500={selected}>
     <p><slot/></p>
 </button>

@@ -15,31 +15,22 @@
 	let lastClickValue = "";
 	let lastClickKey = "";
 
-	let lastClickValueButtonID = "";
-	let lastClickKeyButtonID = "";
-
 	type Point = {
 		x: number;
 		y: number;
 	}
 
-	let lPointsMatrix: Point[] = [];
-	let rPointsMatrix: Point[] = [];
-
 	let spaceX = 0;
 	let spaceY = 0;
 
-	let curID = 0;
+	let hidden: Array<string> = [];
 
-	generateMatrix();
-
-	const handleKeyClick = (key: string, buttonID: string) => () => {
+	const handleKeyClick = (key: string) => () => {
 		lastClickKey = key;
-		lastClickKeyButtonID = buttonID;
 
 		if (lastClickValue) {
-			const lastClickKeyButton = document.getElementById(buttonID);
-			lastClickKeyButton?.blur();
+			// const lastClickKeyButton = document.getElementById(buttonID);
+			// lastClickKeyButton?.blur();
 
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
@@ -54,13 +45,12 @@
 		}
 	}
 
-	const handleValueClick = (value: string, buttonID: string) => () => {
+	const handleValueClick = (value: string) => () => {
 		lastClickValue = value;
-		lastClickValueButtonID = buttonID;
 
 		if (lastClickKey) {
-			const lastClickValueButton = document.getElementById(buttonID);
-			lastClickValueButton?.blur();
+			// const lastClickValueButton = document.getElementById(buttonID);
+			// lastClickValueButton?.blur();
 
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
@@ -75,41 +65,44 @@
 		}
 	}
 
-	$: items = Object.keys(data.module).map(key => {
-		const value = data.module[key];
+	$: getItems = () => {
+		const {lPointsMatrix, rPointsMatrix} = generateMatrix();
 
-		const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
-		const rPoint_ind = Math.round(Math.random() * (rPointsMatrix.length - 1));
+		return Object.keys(data.module).filter(key => !hidden.includes(key)).map(key => {
+			const value = data.module[key];
 
-		const lPoint = lPointsMatrix[lPoint_ind]
-		const rPoint = rPointsMatrix[rPoint_ind]
+			const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
+			const rPoint_ind = Math.round(Math.random() * (rPointsMatrix.length - 1));
 
-		lPointsMatrix.splice(lPoint_ind, 1);
-		rPointsMatrix.splice(rPoint_ind, 1);
+			const lPoint = lPointsMatrix[lPoint_ind]
+			const rPoint = rPointsMatrix[rPoint_ind]
 
-		const xl = lPoint.x;
-		const yl = lPoint.y;
+			lPointsMatrix.splice(lPoint_ind, 1);
+			rPointsMatrix.splice(rPoint_ind, 1);
 
-		const xr = rPoint.x;
-		const yr = rPoint.y;
+			const xl = lPoint.x;
+			const yl = lPoint.y;
 
-		const lID = generateId();
-		const rID = generateId();
+			const xr = rPoint.x;
+			const yr = rPoint.y;
 
-		return {key, xl, yl, value, xr, yr, lID, rID};
-	})
+			return {key, xl, yl, value, xr, yr};
+		})
+	}
+
+	$: items = getItems();
 
 	function correctAnswer(): void {
-		document.getElementById(lastClickKeyButtonID)?.remove();
-		document.getElementById(lastClickValueButtonID)?.remove();
+		hidden = [...hidden, lastClickKey];
+
 		score++;
 		itemsRemain--;
 	}
 
-	function generateMatrix(): void {
+	function generateMatrix() {
 
-		lPointsMatrix = [];
-		rPointsMatrix = [];
+		const lPointsMatrix = [];
+		const rPointsMatrix = [];
 
 		if (100 % buttonWidth == 0) spaceX = buttonWidth / 2;
 		else spaceX = (100 % buttonWidth) / 2;
@@ -128,24 +121,22 @@
 				rPointsMatrix.push({x: x, y: y});
 			}
 		}
-	}
 
-	function generateId(): string {
-		curID++;
-    	return curID.toString();
+		return {lPointsMatrix, rPointsMatrix};
 	}
+	
 </script>
 
 <div class="absolute pl-2 text-4xl flex flex-row space-x-6 w-screen">
 	<h1>Очки: {score}</h1>
-	<Timer maxSeconds={10} timeIsUp={()=>{console.log("Time's up")}}></Timer>
-	<h1>Осталось элементов: {itemsRemain}</h1>
+	<Timer/>
+	<h1>Осталось: {itemsRemain}</h1>
 </div>
 
 
 <div class="h-screen w-screen relative">
-	{#each items as item}
-		<ItemButton isKey x={item.xl} y={item.yl} onclick={handleKeyClick(item.key, item.lID)} id={item.lID}> {item.key} </ItemButton>
-		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value, item.rID)} id={item.rID}> {item.value} </ItemButton>
+	{#each items as item (item.key)}
+		<ItemButton isKey x={item.xl} y={item.yl} onclick={handleKeyClick(item.key)} selected={lastClickKey === item.key}> {item.key} </ItemButton>
+		<ItemButton isKey={false} x={item.xr} y={item.yr} onclick={handleValueClick(item.value)} selected={lastClickValue === item.value}> {item.value} </ItemButton>
 	{/each}
 </div>

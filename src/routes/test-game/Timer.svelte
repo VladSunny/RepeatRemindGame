@@ -1,22 +1,14 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
 
-  export let maxSeconds: number;
-  let remainingSeconds: number = maxSeconds;
+  let elapsed: number = 0;
 
   let timer: ReturnType<typeof setInterval>;
-
-  export let timeIsUp: () => void;
   
   // Старт таймера
   function startTimer(): void {
     timer = setInterval(() => {
-      if (remainingSeconds > 0) {
-        remainingSeconds -= 1;
-      } else {
-        stopTimer();
-        timeIsUp();
-      }
+      elapsed++;
     }, 1000);
   }
   
@@ -29,4 +21,4 @@
   onDestroy(stopTimer);
 </script>
 
-<h1>Оставшееся время: {remainingSeconds}/{maxSeconds} секунд</h1>
+<h1>Прошло {elapsed}</h1>
