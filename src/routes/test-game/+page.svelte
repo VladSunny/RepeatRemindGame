@@ -152,7 +152,7 @@
 	}
 </script>
 
-<div class="absolute pl-2 text-4xl flex flex-row space-x-6 w-screen">
+<div class="absolute pl-2 sm:text-4xl flex flex-row space-x-6 w-screen text-xl">
 	<h1>Очки: {score}</h1>
 	<Timer />
 	<h1>Осталось: {itemsRemain}</h1>
