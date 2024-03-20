@@ -11,6 +11,8 @@
 
 	let score = 0;
 	let itemsRemain: number = Object.keys(data.module).length;
+	let curPart = 0;
+	const partSize = 5;
 
 	let lastClickValue = "";
 	let lastClickKey = "";
@@ -24,6 +26,8 @@
 	let spaceY = 0;
 
 	let hidden: Array<string> = [];
+
+	shuffleObject(data.module);
 
 	const handleKeyClick = (key: string) => () => {
 		lastClickKey = key;
@@ -49,9 +53,6 @@
 		lastClickValue = value;
 
 		if (lastClickKey) {
-			// const lastClickValueButton = document.getElementById(buttonID);
-			// lastClickValueButton?.blur();
-
 			if (data.module[lastClickKey] == lastClickValue) {
 				console.log("correct");
 				correctAnswer();
@@ -68,7 +69,7 @@
 	$: getItems = () => {
 		const {lPointsMatrix, rPointsMatrix} = generateMatrix();
 
-		return Object.keys(data.module).filter(key => !hidden.includes(key)).map(key => {
+		return Object.keys(data.module).slice(curPart * partSize, Math.min((curPart + 1) * partSize, Object.keys(data.module).length)).filter(key => !hidden.includes(key)).map(key => {
 			const value = data.module[key];
 
 			const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
@@ -97,12 +98,16 @@
 
 		score++;
 		itemsRemain--;
+
+		if (Object.keys(data.module).length - itemsRemain == (curPart + 1) * partSize) {
+			curPart++;
+			items = getItems();
+		}
 	}
 
 	function generateMatrix() {
-
-		const lPointsMatrix = [];
-		const rPointsMatrix = [];
+		const lPointsMatrix: { x: number; y: number }[] = [];
+    	const rPointsMatrix: { x: number; y: number }[] = [];
 
 		if (100 % buttonWidth == 0) spaceX = buttonWidth / 2;
 		else spaceX = (100 % buttonWidth) / 2;
@@ -121,8 +126,40 @@
 				rPointsMatrix.push({x: x, y: y});
 			}
 		}
-
 		return {lPointsMatrix, rPointsMatrix};
+	}
+
+	function shuffleObject<T>(obj: Record<string, T>): Record<string, T> {
+		let entries = Object.entries(obj);
+	
+		for (let i = entries.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[entries[i], entries[j]] = [entries[j], entries[i]];
+		}
+	
+		return Object.fromEntries(entries);
+	}
+
+	function chunkObject<T>(obj: Record<string, T>, chunkSize: number): Array<Record<string, T>> {
+		const entries: [string, T][] = Object.entries(obj);
+
+		const chunkArray = <T>(array: T[], size: number): T[][] => {
+			return array.reduce((resultArray, item, index) => {
+			const chunkIndex = Math.floor(index / size);
+
+			if(!resultArray[chunkIndex]) {
+				resultArray[chunkIndex] = [];
+			}
+
+			resultArray[chunkIndex].push(item);
+			
+			return resultArray;
+			}, [] as T[][]);
+		};
+
+		const chunkedEntries = chunkArray(entries, chunkSize);
+
+		return chunkedEntries.map(chunk => Object.fromEntries(chunk));
 	}
 	
 </script>
