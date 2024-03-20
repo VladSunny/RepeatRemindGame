@@ -4,7 +4,7 @@ import type { Database as DatabaseGenerated } from './generated';
 export type Database = DatabaseGenerated;
 
 export type TableRow<T extends keyof Database['public']['Tables']> =
-    Database['public']['Tables'][T]['Row'];
+	Database['public']['Tables'][T]['Row'];
 export type Enum<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T];
 
 export type DbResult<T> = T extends PromiseLike<infer U> ? U : never;

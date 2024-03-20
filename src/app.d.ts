@@ -6,17 +6,17 @@ import { Database } from '$lib/types/supabase';
 
 // and what to do when importing types
 declare global {
-    namespace App {
-        interface Session extends SupabaseSession {}
-        interface Locals {
-            supabase: SupabaseClient<Database>;
-        }
-        // interface Error {}
-        // interface Platform {}
-    }
+	namespace App {
+		interface Session extends SupabaseSession {}
+		interface Locals {
+			supabase: SupabaseClient<Database>;
+		}
+		// interface Error {}
+		// interface Platform {}
+	}
 	declare interface Window {
 		TelegramGameProxy?: {
 			shareScore: () => void;
 		};
-	}	
+	}
 }

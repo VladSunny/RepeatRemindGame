@@ -24,7 +24,7 @@
 	import { invalidate } from '$app/navigation';
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
-	    // This is the data we are receiving from +layout.ts
+	// This is the data we are receiving from +layout.ts
 	export let data: LayoutData;
 
 	// We are using a reactive declaraion to extract the values we need.

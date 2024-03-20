@@ -7,11 +7,11 @@ import type { LayoutServerLoad } from './$types';
  * in the +layout.ts for initializing the client supabase session during SSR.
  */
 export const load = (async ({ locals: { supabase } }) => {
-    const {
-        data: { session },
-    } = await supabase.auth.getSession();
+	const {
+		data: { session }
+	} = await supabase.auth.getSession();
 
-    return {
-        session,
-    };
+	return {
+		session
+	};
 }) satisfies LayoutServerLoad;
