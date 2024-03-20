@@ -12,7 +12,7 @@
 	let score = 0;
 	let itemsRemain: number = Object.keys(data.module).length;
 	let curPart = 0;
-	const partSize = 5;
+	const partSize = 4;
 
 	let lastClickValue = "";
 	let lastClickKey = "";
@@ -67,19 +67,19 @@
 	}
 
 	$: getItems = () => {
-		const {lPointsMatrix, rPointsMatrix} = generateMatrix();
+		const pointsMatrix = generateMatrix();
 
+		
 		return Object.keys(data.module).slice(curPart * partSize, Math.min((curPart + 1) * partSize, Object.keys(data.module).length)).filter(key => !hidden.includes(key)).map(key => {
 			const value = data.module[key];
 
-			const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
-			const rPoint_ind = Math.round(Math.random() * (rPointsMatrix.length - 1));
+			const lPoint_ind = Math.round(Math.random() * (pointsMatrix.length - 1));
+			const lPoint = pointsMatrix[lPoint_ind]
+			pointsMatrix.splice(lPoint_ind, 1);
 
-			const lPoint = lPointsMatrix[lPoint_ind]
-			const rPoint = rPointsMatrix[rPoint_ind]
-
-			lPointsMatrix.splice(lPoint_ind, 1);
-			rPointsMatrix.splice(rPoint_ind, 1);
+			const rPoint_ind = Math.round(Math.random() * (pointsMatrix.length - 1));
+			const rPoint = pointsMatrix[rPoint_ind]
+			pointsMatrix.splice(rPoint_ind, 1);
 
 			const xl = lPoint.x;
 			const yl = lPoint.y;
@@ -89,6 +89,30 @@
 
 			return {key, xl, yl, value, xr, yr};
 		})
+
+
+		// const {lPointsMatrix, rPointsMatrix} = generateMatrix();
+
+		// return Object.keys(data.module).slice(curPart * partSize, Math.min((curPart + 1) * partSize, Object.keys(data.module).length)).filter(key => !hidden.includes(key)).map(key => {
+		// 	const value = data.module[key];
+
+		// 	const lPoint_ind = Math.round(Math.random() * (lPointsMatrix.length - 1));
+		// 	const rPoint_ind = Math.round(Math.random() * (rPointsMatrix.length - 1));
+
+		// 	const lPoint = lPointsMatrix[lPoint_ind]
+		// 	const rPoint = rPointsMatrix[rPoint_ind]
+
+		// 	lPointsMatrix.splice(lPoint_ind, 1);
+		// 	rPointsMatrix.splice(rPoint_ind, 1);
+
+		// 	const xl = lPoint.x;
+		// 	const yl = lPoint.y;
+
+		// 	const xr = rPoint.x;
+		// 	const yr = rPoint.y;
+
+		// 	return {key, xl, yl, value, xr, yr};
+		// })
 	}
 
 	$: items = getItems();
@@ -106,27 +130,40 @@
 	}
 
 	function generateMatrix() {
-		const lPointsMatrix: { x: number; y: number }[] = [];
-    	const rPointsMatrix: { x: number; y: number }[] = [];
 
-		if (100 % buttonWidth == 0) spaceX = buttonWidth / 2;
-		else spaceX = (100 % buttonWidth) / 2;
+		const pointsMatrix: {x: number; y: number}[] = [];
 
-		if (100 % buttonHeight == 0) spaceY = buttonHeight / 2;
-		else spaceY = (100 % buttonHeight) / 2;
+		spaceY = 10;
 
 		for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
-			for (let x = spaceX; x + buttonWidth <= 50; x += buttonWidth) {
-				lPointsMatrix.push({x: x, y: y});
+			for (let x = 0; x + buttonWidth <= 100; x += buttonWidth) {
+				pointsMatrix.push({x: x, y: y});
 			}
 		}
 
-		for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
-			for (let x = 50; x + buttonWidth <= 100; x += buttonWidth) {
-				rPointsMatrix.push({x: x, y: y});
-			}
-		}
-		return {lPointsMatrix, rPointsMatrix};
+		return pointsMatrix;
+
+		// const lPointsMatrix: { x: number; y: number }[] = [];
+    	// const rPointsMatrix: { x: number; y: number }[] = [];
+
+		// if (100 % buttonWidth == 0) spaceX = buttonWidth / 2;
+		// else spaceX = (100 % buttonWidth) / 2;
+
+		// if (100 % buttonHeight == 0) spaceY = buttonHeight / 2;
+		// else spaceY = (100 % buttonHeight) / 2;
+
+		// for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
+		// 	for (let x = spaceX; x + buttonWidth <= 50; x += buttonWidth) {
+		// 		lPointsMatrix.push({x: x, y: y});
+		// 	}
+		// }
+
+		// for (let y = spaceY; y + buttonHeight <= 100; y += buttonHeight) {
+		// 	for (let x = 50; x + buttonWidth <= 100; x += buttonWidth) {
+		// 		rPointsMatrix.push({x: x, y: y});
+		// 	}
+		// }
+		// return {lPointsMatrix, rPointsMatrix};
 	}
 
 	function shuffleObject<T>(obj: Record<string, T>): Record<string, T> {
