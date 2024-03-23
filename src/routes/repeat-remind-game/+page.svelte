@@ -124,6 +124,24 @@
 			curPart++;
 			items = getItems();
 		}
+
+		if (!itemsRemain) finishModule();
+	}
+
+	function finishModule(): void {
+		const args: UpdateScoreArgs = {
+			userId: $page.url.searchParams.get('user_id') || '',
+			chatId: $page.url.searchParams.get('chat_id') || '',
+			gameMessageId: $page.url.searchParams.get('game_id') || '',
+			inlineMessageId: $page.url.searchParams.get('inline_message_id') || '',
+			score: score
+		};
+
+		console.log(args);
+		fetch('/update-score', {
+			method: 'POST',
+			body: JSON.stringify(args)
+		});
 	}
 
 	function generateMatrix() {
