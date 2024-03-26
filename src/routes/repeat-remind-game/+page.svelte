@@ -42,6 +42,7 @@
 				correctAnswer();
 			} else {
 				console.log('incorrect');
+				incorrectAnswer();
 			}
 
 			lastClickKey = '';
@@ -58,6 +59,7 @@
 				correctAnswer();
 			} else {
 				console.log('incorrect');
+				incorrectAnswer();
 			}
 
 			lastClickKey = '';
@@ -126,6 +128,10 @@
 		}
 
 		if (!itemsRemain) finishModule();
+	}
+
+	function incorrectAnswer(): void {
+		score--;
 	}
 
 	function finishModule(): void {
