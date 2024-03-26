@@ -131,7 +131,7 @@
 	}
 
 	function incorrectAnswer(): void {
-		score--;
+		if (score) score--;
 	}
 
 	function finishModule(): void {
