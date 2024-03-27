@@ -4,7 +4,7 @@
 	// Highlight JS
 	import hljs from 'highlight.js/lib/core';
 	import 'highlight.js/styles/github-dark.css';
-	import { storeHighlightJs } from '@skeletonlabs/skeleton';
+	import { Modal, storeHighlightJs } from '@skeletonlabs/skeleton';
 	import xml from 'highlight.js/lib/languages/xml'; // for HTML
 	import css from 'highlight.js/lib/languages/css';
 	import javascript from 'highlight.js/lib/languages/javascript';
@@ -22,6 +22,9 @@
 	import type { LayoutData } from './$types';
 	import { onMount } from 'svelte';
 	import { invalidate } from '$app/navigation';
+	import { initializeStores } from '@skeletonlabs/skeleton';
+
+	initializeStores();
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
 	// This is the data we are receiving from +layout.ts
@@ -50,3 +53,4 @@
 </script>
 
 <slot />
+<Modal />

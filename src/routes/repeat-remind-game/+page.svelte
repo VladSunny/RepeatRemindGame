@@ -15,12 +15,19 @@
 	} from './config';
 	import Timer from './Timer.svelte';
 	import { breakpointStore } from '$lib/stores/breakpointsStore';
+	import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+	import Mistake from './Mistake.svelte';
 	export let data: PageData;
+
+	const modalStore = getModalStore();
 
 	let score = 0;
 	let itemsRemain: number = Object.keys(data.module).length;
 	let curPart = 0;
 	const partSize = 4;
+
+	let gameStoped: boolean = false;
 
 	let lastClickValue = '';
 	let lastClickKey = '';
@@ -116,11 +123,19 @@
 
 	$: items = getItems();
 
+	let timer: ReturnType<typeof setInterval>;
+
 	function correctAnswer(): void {
 		hidden = [...hidden, lastClickKey];
 
 		score++;
 		itemsRemain--;
+
+		if (timer) clearInterval(timer);
+
+		timer = setInterval(() => {
+			decreaseScore();
+		}, 3000);
 
 		if (Object.keys(data.module).length - itemsRemain == (curPart + 1) * partSize) {
 			curPart++;
@@ -131,7 +146,7 @@
 	}
 
 	function incorrectAnswer(): void {
-		if (score) score--;
+		decreaseScore();
 	}
 
 	function finishModule(): void {
@@ -148,6 +163,30 @@
 			method: 'POST',
 			body: JSON.stringify(args)
 		});
+
+		gameStoped = true;
+		clearInterval(timer);
+
+		const modal: ModalSettings = {
+			type: 'alert',
+			// Data
+			title: 'Игра закончена',
+			body: `Ваш результат: ${score}!`,
+			// TRUE if confirm pressed, FALSE if cancel pressed
+			buttonTextCancel: 'Попробовать ещё раз',
+			response: (r: boolean) => {
+				score = 0;
+				curPart = 0;
+				itemsRemain = Object.keys(data.module).length;
+				gameStoped = false;
+				items = getItems();
+
+				hidden = [];
+				shuffledModule = shuffleObject(data.module);
+			},
+		};
+
+		modalStore.trigger(modal);
 	}
 
 	function generateMatrix() {
@@ -174,13 +213,24 @@
 
 		return Object.fromEntries(entries);
 	}
+
+	let mistakeVisible = false;
+
+	function decreaseScore() {
+		if (score) {
+			score--;
+			mistakeVisible = true;
+		}
+	}
 </script>
 
 <div class="absolute pl-2 sm:text-4xl flex flex-row space-x-6 w-screen text-xl">
 	<h1>Очки: {score}</h1>
-	<Timer />
+	<Timer {gameStoped}/>
 	<h1>Осталось: {itemsRemain}</h1>
 </div>
+
+<Mistake bind:visible={mistakeVisible}/>
 
 <div class="h-screen w-screen relative">
 	{#each items as item (item.key)}

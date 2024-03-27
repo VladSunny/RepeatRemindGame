@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	export let gameStoped: boolean;
 
 	let elapsed: number = 0;
 
@@ -16,9 +17,17 @@
 		clearInterval(timer);
 	}
 
-	startTimer();
+	$: if (gameStoped) {
+		stopTimer();
+	}
+	else {
+		elapsed = 0;
+		startTimer();
+	}
 
-	onDestroy(stopTimer);
+	onMount( () => {
+		return stopTimer;
+	})
 </script>
 
 <h1>Прошло {elapsed}</h1>
