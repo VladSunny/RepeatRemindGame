@@ -22,8 +22,8 @@ import type { PageData } from './$types';
 </script>
 
 
-<div class="flex flex-col items-center text-5xl pt-4 space-y-5">
-    <h1 class="p-5 variant-glass-secondary rounded-3xl italic">
+<div class="flex flex-col items-center pt-4 space-y-5">
+    <h1 class="p-5 variant-glass-secondary rounded-3xl italic lg:text-6xl md:text-5xl sm:text-4xl">
         Каталог модулей
     </h1>
     
@@ -61,24 +61,26 @@ import type { PageData } from './$types';
                 </svelte:fragment>
 
                 <svelte:fragment slot="content">
-                    {#each Object.entries(module.content) as [key, value]}
-                        <p class="variant-ghost-secondary rounded-2xl py-2 px-4">
-                            {#if $breakpointStore.isDesktop}
-                                <h1 class='text-4xl'>{key}</h1>
-                                <p class='text-4xl'>{module.separator} {value}</p>
-                            {/if}
+                    <div class="max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
+                        {#each Object.entries(module.content) as [key, value]}
+                            <p class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
+                                {#if $breakpointStore.isDesktop}
+                                    <h1 class='text-4xl'>{key}</h1>
+                                    <p class='text-4xl'>{module.separator} {value}</p>
+                                {/if}
 
-                            {#if $breakpointStore.isTablet}
-                                <h1 class='text-3xl'>{key}</h1>
-                                <p class='text-3xl'>{module.separator} {value}</p>
-                            {/if}
+                                {#if $breakpointStore.isTablet}
+                                    <h1 class='text-3xl'>{key}</h1>
+                                    <p class='text-3xl'>{module.separator} {value}</p>
+                                {/if}
 
-                            {#if $breakpointStore.isMobile}
-                                <h1 class='text-2xl'>{key}</h1>
-                                <p class='text-2xl'>{module.separator} {value}</p>
-                            {/if}
-                        </p>
-                    {/each}
+                                {#if $breakpointStore.isMobile}
+                                    <h1 class='text-2xl'>{key}</h1>
+                                    <p class='text-2xl'>{module.separator} {value}</p>
+                                {/if}
+                            </p>
+                        {/each}
+                    </div>
                 </svelte:fragment>
             </AccordionItem>
         {/each}
