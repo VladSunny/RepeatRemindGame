@@ -35,50 +35,24 @@ import type { PageData } from './$types';
     separatorText="из"
     />
 
-    <Accordion class="space-y-5 py-5 px-5 w-5/6 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
+    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-5 w-5/6 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
         {#each paginatedSource as module}
             <AccordionItem class="variant-filled-primary rounded-2xl">
                 <svelte:fragment slot="summary">
                     <div class="flex flex-col ring-4 variant-ringed-secondary rounded-2xl py-2 px-4">
-                        {#if $breakpointStore.isDesktop}
-                            <h1 class='text-4xl'>{module.name}</h1>
-                            <p class='text-4xl'>{Object.keys(module.content).length} items</p>
-                            <p class='text-4xl'>ID: {module.id}</p>
-                        {/if}
-
-                        {#if $breakpointStore.isTablet}
-                            <h1 class='text-3xl'>{module.name}</h1>
-                            <p class='text-3xl'>{Object.keys(module.content).length} items</p>
-                            <p class='text-3xl'>ID: {module.id}</p>
-                        {/if}
-
-                        {#if $breakpointStore.isMobile}
-                            <h1 class='text-2xl'>{module.name}</h1>
-                            <p class='text-2xl'>{Object.keys(module.content).length} items</p>
-                            <p class='text-2xl'>ID: {module.id}</p>
-                        {/if}
+                        <h1>{module.name}</h1>
+                        <p>{Object.keys(module.content).length} items</p>
+                        <p>ID: {module.id}</p>
                     </div>
                 </svelte:fragment>
 
                 <svelte:fragment slot="content">
                     <div class="max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
                         {#each Object.entries(module.content) as [key, value]}
-                            <p class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
-                                {#if $breakpointStore.isDesktop}
-                                    <h1 class='text-4xl'>{key}</h1>
-                                    <p class='text-4xl'>{module.separator} {value}</p>
-                                {/if}
-
-                                {#if $breakpointStore.isTablet}
-                                    <h1 class='text-3xl'>{key}</h1>
-                                    <p class='text-3xl'>{module.separator} {value}</p>
-                                {/if}
-
-                                {#if $breakpointStore.isMobile}
-                                    <h1 class='text-2xl'>{key}</h1>
-                                    <p class='text-2xl'>{module.separator} {value}</p>
-                                {/if}
-                            </p>
+                            <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
+                                <h1>{key}</h1>
+                                <p>{module.separator} {value}</p>
+                            </div>
                         {/each}
                     </div>
                 </svelte:fragment>
