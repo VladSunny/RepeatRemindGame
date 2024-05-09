@@ -1,11 +1,19 @@
 <script lang="ts">
-    import { breakpointStore } from '$lib/stores/breakpointsStore';
     import type { PageData } from './$types';
-    import { Accordion, AccordionItem, type PaginationSettings } from '@skeletonlabs/skeleton';
+    import { type PaginationSettings } from '@skeletonlabs/skeleton';
     import { Paginator } from '@skeletonlabs/skeleton';
+    import { Drawer, getDrawerStore, type DrawerSettings } from "@skeletonlabs/skeleton";
+	import type Module from 'module';
+
+    const drawerStore = getDrawerStore();
     
     export let data: PageData;
     const modules_list = data.modules;
+
+    let selectedModuleName: string;
+    let selectedModuleContent: Record<string, string>;
+    let selectedModuleSeparator: string;
+    let selectedModuleID: number;
 
     let paginationSettings = {
         page: 0,
@@ -14,11 +22,24 @@
         amounts: [1,2,5,10],
     } satisfies PaginationSettings;
 
+    const drawerSettings: DrawerSettings = {
+        id: 'example-2',
+        width: 'w-4/5',
+    };
 
     $: paginatedSource = modules_list.slice(
         paginationSettings.page * paginationSettings.limit,
         paginationSettings.page * paginationSettings.limit + paginationSettings.limit
     );
+
+    const viewHandler = (moduleName: string, moduleContent: Record<string, string>, moduleSeparator: string, moduleID: number) => () => {
+        selectedModuleName = moduleName;
+        selectedModuleContent = moduleContent;
+        selectedModuleSeparator = moduleSeparator;
+        selectedModuleID = moduleID;
+
+        drawerStore.open(drawerSettings);
+    }
 </script>
 
 
@@ -35,31 +56,33 @@
     separatorText="из"
     />
 
-    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[70vh] w-5/6">
-        <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
-            {#each paginatedSource as module}
-                <AccordionItem class="variant-filled-primary rounded-2xl">
-                    <svelte:fragment slot="summary">
-                        <div class="flex flex-col ring-4 variant-ringed-secondary rounded-2xl py-2 px-4">
-                            <h1>{module.name}</h1>
-                            <p>{Object.keys(module.content).length} items</p>
-                            <p>ID: {module.id}</p>
-                        </div>
-                    </svelte:fragment>
+    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[70vh] w-5/6 lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
+        {#each paginatedSource as module}
+            <div class="flex flex-row items-center justify-between variant-filled-primary rounded-2xl py-2 px-4 w-full">
+                <div class="flex flex-col">
+                    <h1>{module.name}</h1>
+                    <p>{Object.keys(module.content).length} items</p>
+                    <p>ID: {module.id}</p>
+                </div>
 
-                    <svelte:fragment slot="content">
-                        <div class="max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
-                            {#each Object.entries(module.content) as [key, value]}
-                                <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
-                                    <h1>{key}</h1>
-                                    <p>{module.separator} {value}</p>
-                                </div>
-                            {/each}
-                        </div>
-                    </svelte:fragment>
-                </AccordionItem>
-            {/each}
-        </Accordion>
+                <button class="btn variant-filled-secondary lg:w-1/5 md:w-2/5 sm:3/5"
+                 on:click={viewHandler(module.name, module.content, module.separator, module.id)}>
+                    <p>Подробнее</p>
+                </button>
+            </div>
+        {/each}
     </div>
 </div>
 
+<Drawer class="lg:text-5xl md:text-4xl sm:text-3xl">
+    <h1 class="m-5">{selectedModuleName}</h1>
+    <h1 class="m-5">ID: {selectedModuleID}</h1>
+    <div class="mx-5 py-5 px-5 variant-filled-primary rounded-3xl max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
+        {#each Object.entries(selectedModuleContent) as [key, value]}
+            <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
+                <h1>{key}</h1>
+                <p>{selectedModuleSeparator} {value}</p>
+            </div>
+        {/each}
+    </div>
+</Drawer>
