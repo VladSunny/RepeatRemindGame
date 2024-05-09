@@ -81,9 +81,9 @@
     <h1 class="m-5">ID: {selectedModuleID}</h1>
     <div class="mx-5 py-5 px-5 variant-filled-primary rounded-3xl max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
         {#each Object.entries(selectedModuleContent) as [key, value]}
-            <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
-                <h1 class="truncate">{key}</h1>
-                <p class="truncate">{selectedModuleSeparator} {value}</p>
+            <div class="variant-ghost-secondary rounded-2xl py-5">
+                <h1 class="truncate pb-1">{key}</h1>
+                <p class="truncate pb-1">{selectedModuleSeparator} {value}</p>
             </div>
         {/each}
     </div>
