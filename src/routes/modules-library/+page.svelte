@@ -35,29 +35,31 @@
     separatorText="из"
     />
 
-    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3 w-2/3 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
-        {#each paginatedSource as module}
-            <AccordionItem class="variant-filled-primary rounded-2xl">
-                <svelte:fragment slot="summary">
-                    <div class="flex flex-col ring-4 variant-ringed-secondary rounded-2xl py-2 px-4">
-                        <h1>{module.name}</h1>
-                        <p>{Object.keys(module.content).length} items</p>
-                        <p>ID: {module.id}</p>
-                    </div>
-                </svelte:fragment>
+    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh] w-2/3">
+        <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
+            {#each paginatedSource as module}
+                <AccordionItem class="variant-filled-primary rounded-2xl">
+                    <svelte:fragment slot="summary">
+                        <div class="flex flex-col ring-4 variant-ringed-secondary rounded-2xl py-2 px-4">
+                            <h1>{module.name}</h1>
+                            <p>{Object.keys(module.content).length} items</p>
+                            <p>ID: {module.id}</p>
+                        </div>
+                    </svelte:fragment>
 
-                <svelte:fragment slot="content">
-                    <div class="max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
-                        {#each Object.entries(module.content) as [key, value]}
-                            <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
-                                <h1>{key}</h1>
-                                <p>{module.separator} {value}</p>
-                            </div>
-                        {/each}
-                    </div>
-                </svelte:fragment>
-            </AccordionItem>
-        {/each}
-    </Accordion>
+                    <svelte:fragment slot="content">
+                        <div class="max-h-[75vh] overflow-y-auto flex flex-col space-y-5">
+                            {#each Object.entries(module.content) as [key, value]}
+                                <div class="variant-ghost-secondary rounded-2xl py-3 px-4 mr-5">
+                                    <h1>{key}</h1>
+                                    <p>{module.separator} {value}</p>
+                                </div>
+                            {/each}
+                        </div>
+                    </svelte:fragment>
+                </AccordionItem>
+            {/each}
+        </Accordion>
+    </div>
 </div>
 
