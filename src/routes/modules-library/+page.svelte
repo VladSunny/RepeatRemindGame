@@ -35,7 +35,7 @@
     separatorText="из"
     />
 
-    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3 w-3/4 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
+    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3 w-2/3 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
         {#each paginatedSource as module}
             <AccordionItem class="variant-filled-primary rounded-2xl">
                 <svelte:fragment slot="summary">
