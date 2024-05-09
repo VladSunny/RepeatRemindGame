@@ -47,16 +47,8 @@
     <h1 class="p-5 variant-glass-secondary rounded-3xl not-italic lg:text-6xl md:text-5xl sm:text-4xl">
         Каталог модулей
     </h1>
-    
-    <Paginator
-    bind:settings={paginationSettings}
-    showFirstLastButtons="{false}"
-    showPreviousNextButtons="{true}"
-    amountText="Элементов"
-    separatorText="из"
-    />
 
-    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[70vh] w-5/6 lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
+    <div class="variant-ghost-secondary rounded-2xl w-5/6 lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
         {#each paginatedSource as module}
             <div class="flex flex-row items-center justify-between variant-filled-primary rounded-2xl py-2 px-4 w-full">
                 <div class="flex flex-col">
@@ -71,6 +63,16 @@
                 </button>
             </div>
         {/each}
+    </div>
+
+    <div class="pb-5">
+        <Paginator
+        bind:settings={paginationSettings}
+        showFirstLastButtons="{false}"
+        showPreviousNextButtons="{true}"
+        amountText="Элементов"
+        separatorText="из"
+        />
     </div>
 </div>
 
