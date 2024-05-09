@@ -35,7 +35,7 @@
     separatorText="из"
     />
 
-    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh] w-2/3">
+    <div class="variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh] w-5/6">
         <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3">
             {#each paginatedSource as module}
                 <AccordionItem class="variant-filled-primary rounded-2xl">
