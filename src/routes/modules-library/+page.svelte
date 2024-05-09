@@ -1,6 +1,6 @@
 <script lang="ts">
     import { breakpointStore } from '$lib/stores/breakpointsStore';
-import type { PageData } from './$types';
+    import type { PageData } from './$types';
     import { Accordion, AccordionItem, type PaginationSettings } from '@skeletonlabs/skeleton';
     import { Paginator } from '@skeletonlabs/skeleton';
     
@@ -23,7 +23,7 @@ import type { PageData } from './$types';
 
 
 <div class="flex flex-col items-center pt-4 space-y-5">
-    <h1 class="p-5 variant-glass-secondary rounded-3xl italic lg:text-6xl md:text-5xl sm:text-4xl">
+    <h1 class="p-5 variant-glass-secondary rounded-3xl not-italic lg:text-6xl md:text-5xl sm:text-4xl">
         Каталог модулей
     </h1>
     
@@ -35,7 +35,7 @@ import type { PageData } from './$types';
     separatorText="из"
     />
 
-    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-5 w-5/6 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
+    <Accordion class="lg:text-4xl md:text-3xl sm:text-2xl space-y-5 py-5 px-3 w-3/4 variant-ghost-secondary rounded-2xl overflow-y-auto max-h-[75vh]">
         {#each paginatedSource as module}
             <AccordionItem class="variant-filled-primary rounded-2xl">
                 <svelte:fragment slot="summary">
