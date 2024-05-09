@@ -60,7 +60,7 @@
         {#each paginatedSource as module}
             <div class="flex flex-row items-center justify-between variant-filled-primary rounded-2xl py-2 px-4 w-full">
                 <div class="flex flex-col">
-                    <h1>{module.name}</h1>
+                    <h1 class="truncate max-w-[40vw]">{module.name}</h1>
                     <p>{Object.keys(module.content).length} items</p>
                     <p>ID: {module.id}</p>
                 </div>
